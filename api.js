@@ -58,6 +58,22 @@ app.get("/api/restaurants/:id", async (req, res) => {
     }
 });
 
+//Get restaurants in a location
+app.get("/api/restaurants/location/:location", async (req, res) => {
+    try {
+        const restaurant = await db.query(
+            `select * from yelp.restaurants q WHERE q.location = $1`,
+            [req.params.location]
+        );
+        res.status(200).json({
+            status: "sucsess",
+            data: { restaurant: restaurant.rows },
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 //Create a restaurant
 app.post("/api/restaurants/create", async (req, res) => {
     try {
